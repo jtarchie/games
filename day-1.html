@@ -1,0 +1,69 @@
+<html>
+
+<head>
+    <style>
+        body {
+            overflow: hidden;
+        }
+        .balloon {
+            border-radius: 50%;
+            position: absolute;
+            filter: drop-shadow(3px 3px 3px #000);
+            animation-name: floating;
+            animation-duration: 3s;
+        }
+        #score {
+            width: 50%;
+            margin: 0 auto;
+            font-size: 45pt;
+            text-align: center;
+        }
+
+        @keyframes floating {
+            100% { top: 0; }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="score">0</div>
+
+    <script>
+        "use strict";
+
+        let widths = [60, 75, 90, 115];
+        let colors = ["red", "green", "yellow", "blue", "purple"];
+        let totalBalloons = 8;
+        let startOffset = 100;
+        let totalScore = 0;
+        let scoreHTML = document.getElementById("score");
+
+        for (var i = 0; i < totalBalloons; i++) {
+            let balloonHTML = document.createElement("div");
+            balloonHTML.classList.add("balloon");
+            balloonHTML.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            let width = widths[Math.floor(Math.random() * widths.length)]
+            balloonHTML.style.width = balloonHTML.style.height = width;
+
+            balloonHTML.style.left = Math.floor(Math.random() * window.innerWidth);
+            balloonHTML.style.top = window.innerHeight - width;
+
+            balloonHTML.style.animationDuration = ((Math.random() * 3) + 1).toString() + "s";
+            balloonHTML.style.animationDelay = startOffset.toString() + "ms";
+            balloonHTML.addEventListener('animationend', function() {
+                document.body.removeChild(balloonHTML);
+                scoreHTML.innerText = (totalScore--).toString();
+            });
+            balloonHTML.addEventListener('click', function() {
+                document.body.removeChild(balloonHTML);
+                scoreHTML.innerText = (totalScore++).toString();
+            });
+            document.body.append(balloonHTML);
+
+            startOffset += (Math.random() * 500) + 500;
+        }
+    </script>
+</body>
+
+</html>
